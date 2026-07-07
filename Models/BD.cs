@@ -6,33 +6,39 @@ public class BD
 {
     private string _connectionString = @"Server=localhost; DataBase=Album;Integrated Security=True;TrustServerCertificate=True";
 
-    public List<Usuario> ObtenerFiguritas()
+    public List<Figuritas> AbrirSobre()
     {
-        List<Usuario> Usuario = new List<Usuario>();
+        List<Figuuritas> figuritas = new List<Figuritas>();
         using(SqlConnection connection = new SqlConnection(_connectionString)){
-            string query = "SELECT * FROM UsuariosXFiguritas";
-            turnos = connection.Query<Usuario>(query).ToList();
+            string query = "SELECT TOP 5 * FROM Figuritas ORDER BY NEWID()";
+            Figuritas = connection.Query<Figuritas>(query).ToList();
         }
-        return turnos;
+        return figuritas;
     }
 
-    public int AgregarTurno(Turno t)
+    public void GuardarSobre(int idUsuario, List<int> figuritas)
     {
-        string query = "INSERT INTO Usuario (Email, Nombbre) VALUES (@pEmail, @pNombreUsuario)";
-        int resultado;
+        string query = "INSERT INTO Figuritas (Foto, NombreJugador, idSeleccion, Posicion, NumCamiseta) VALUES (@Foto, @NombreJugador, @idSeleccion, @Posicion, @NumCamiseta)";
+        bool resultado;
         using(SqlConnection connection = new SqlConnection(_connectionString)){
-            resultado = connection.Execute(query, new {pEmail = t.Email, pNombreUsuario = t.Nombre});
+            resultado = connection.Execute(query, new {Foto = f.Foto, NombreJugador = f.NombreJugador, idSeleccion = s.idSeleccion, Posicion = f.Posicion, NumCamiseta = f.NumCamiseta});
         }
         return resultado;
     }
 
-    public int CambiarEstado(int id, string nuevoEstado)
+    public List<Figurita> ObtenerAlbum(int idUsuario)
     {
-        string query = "UPDATE Turnos Set Estado = @nuevoEstado WHERE Id = @id";
+        List<FiguritaAlbum> figuritas;
+        string query = "SELECT (Foto, NombreJugador, idSeleccion, Posicion, NumCamiseta) FROM Figuritas VALUES (@Foto, @NombreJugador, @idSeleccion, @Posicion, @NumCamiseta)";;
         int resultado;
         using(SqlConnection connection = new SqlConnection(_connectionString)){
-            resultado = connection.Execute(query, new{id, nuevoEstado});
+            resultado = connection.Execute(query, new {Foto = f.Foto, NombreJugador = f.NombreJugador, idSeleccion = s.idSeleccion, Posicion = f.Posicion, NumCamiseta = f.NumCamiseta});
         }
         return resultado;
+    }
+
+    public List<FiguritaXUsuario> ObtenerRepetidas(int idUsuario)
+    {
+        
     }
 }
