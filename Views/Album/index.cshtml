@@ -18,7 +18,7 @@ else
             </tr>
         </thead>
         <tbody>
-        @foreach (var t in turnos)
+        @foreach (var f in Figuritas)
         {
             <tr>
                 <td>@t.FechaHora</td>
@@ -42,6 +42,6 @@ else
     </table>
 
     <button class="Crear">
-        <a href='@Url.Action("Nuevo", "Turnos")'>Crear turno</a>
+        <a href='@Url.Action("Nuevo", "Album")'>Crear turno</a>
     </button>
 }

@@ -16,28 +16,46 @@ public class BD
         return figuritas;
     }
 
-    public void GuardarSobre(int idUsuario, List<int> figuritas)
+    public void GuardarSobre(int idUsuario, List<Figuritas> figuritas)
     {
-        string query = "INSERT INTO Figuritas (Foto, NombreJugador, idSeleccion, Posicion, NumCamiseta) VALUES (@Foto, @NombreJugador, @idSeleccion, @Posicion, @NumCamiseta)";
+        string query1 = "INSERT INTO FiguritaUsuario (IdFigurita, IdUsuario, Cantidad) VALUES (@figurita.IdFigurita, @idUsuario)";
+        string query2 = "";
         bool resultado;
+        int cantidad;
         using(SqlConnection connection = new SqlConnection(_connectionString)){
-            resultado = connection.Execute(query, new {Foto = f.Foto, NombreJugador = f.NombreJugador, idSeleccion = s.idSeleccion, Posicion = f.Posicion, NumCamiseta = f.NumCamiseta});
+            foreach(Figurita figurita in figuritas){
+                if(figurita.Cantidad = 0){
+                    connection.Execute(query, new {IdFigurita = figurita.IdFigurita, IdUsuario = idUsuario, Cantidad = cantidad});
+                }
+                else
+                    cantidad += 1;
+                
+            }
         }
         return resultado;
     }
 
-    public List<Figurita> ObtenerAlbum(int idUsuario)
+    public List<Figurita> ObtenerAlbum()
+    {
+        List<Figurita> Album;
+        string query = "SELECT (Foto, NombreJugador, idSeleccion, Posicion, NumCamiseta) FROM Figuritas";
+        using(SqlConnection connection = new SqlConnection(_connectionString)){
+            Album = connection.Query<Figuritas>(query).ToList();
+        }
+        return resultado;
+    }
+
+    public List<FiguritaUsuario> ObtenerMiAlbum(int idUsuario)
     {
         List<FiguritaAlbum> figuritas;
-        string query = "SELECT (Foto, NombreJugador, idSeleccion, Posicion, NumCamiseta) FROM Figuritas VALUES (@Foto, @NombreJugador, @idSeleccion, @Posicion, @NumCamiseta)";;
-        int resultado;
+        string query = "SELECT (fu.IdFigurita, f.NombreJugador, f.Foto, f.Posicion, fu.Cantidad) FROM FiguritaUsuario fu INNER JOIN Figuritas f ON (f.IdFigurita = fu.IdFigurita) WHERE (fu.IdUsuario = @idUsuario)";
         using(SqlConnection connection = new SqlConnection(_connectionString)){
-            resultado = connection.Execute(query, new {Foto = f.Foto, NombreJugador = f.NombreJugador, idSeleccion = s.idSeleccion, Posicion = f.Posicion, NumCamiseta = f.NumCamiseta});
+            Album = connection.Query<Figuritas>(query).ToList();
         }
         return resultado;
     }
 
-    public List<FiguritaXUsuario> ObtenerRepetidas(int idUsuario)
+    public List<FiguritaUsuario> ObtenerRepetidas(int idUsuario)
     {
         
     }
