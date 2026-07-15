@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TP4_Album")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d4cbb5f4ad5929bdcc4cbe8a9d122c25b3fc9e8")]
 [assembly: System.Reflection.AssemblyProductAttribute("TP4_Album")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TP4_Album")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

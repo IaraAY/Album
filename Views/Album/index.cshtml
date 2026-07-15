@@ -1,7 +1,7 @@
 @model List<TP4_Album.Models.Figuritas>
 
-<h1>Mi Álbum</h1>
-<a asp-action="AbrirSobre"> Abrir Sobre</a>
+<h1>Álbum 2026</h1>
+<a asp-action="AbrirSobre"><img class="sobreCambio" src="/Imagen/Sobre.png" onmouseover="this.src='/Imagen/SobreAbierto.png';" onmouseout="this.src='/Imagen/Sobre.png';" /></a>
 
 <div class="album">
     @foreach(var figu in ViewBag.Album)

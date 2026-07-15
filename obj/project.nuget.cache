@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bNbuoNKAq10=",
+  "dgSpecHash": "FccemV6N83I=",
   "success": true,
-  "projectFilePath": "Z:\\2026\\Album-main\\Album-main\\Album-main\\TP4_Album.csproj",
+  "projectFilePath": "Z:\\2026\\Programación\\Album\\TP4_Album.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\49764263\\.nuget\\packages\\dapper\\2.1.79\\dapper.2.1.79.nupkg.sha512",
     "C:\\Users\\49764263\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.13\\microsoft.bcl.cryptography.9.0.13.nupkg.sha512",

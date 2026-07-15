@@ -1,9 +1,7 @@
 @model List<TP4_Album.Models.Figuritas>
 
-<h1>Sobre</h1>
-
 <form asp-action="ConfirmarSobre" method="post">
-    <div class="sobre">
+    <div class="album">
         @foreach (var figu in ViewBag.Sobre)
         {
             <input type="hidden" name="idsFiguritas" value="@figu.IdFigurita" />
