@@ -1,47 +1,18 @@
+@model List<TP4_Album.Models.Figuritas>
 
+<h1>Mi Álbum</h1>
+<a asp-action="AbrirSobre"> Abrir Sobre</a>
 
-<h1>Agenda de Turnos</h1>
-
-@if (turnos == null || turnos.Count == 0)
-{
-    <p>No hay turnos cargados.</p>
-}
-else
-{
-    <table border="1" cellpadding="8">
-        <thead>
-            <tr>
-                <th>Fecha y hora</th>
-                <th>Cliente</th>
-                <th>Servicio</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var f in Figuritas)
-        {
-            <tr>
-                <td>@t.FechaHora</td>
-                <td>@t.NombreCliente</td>
-                <td>@t.Servicio</td>
-                <td>@t.Estado</td>
-                <td>
-                    <form action='@Url.Action("Atender", "Turnos")' method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@t.Id" />
-                        <button type="submit">Atender</button>
-                    </form>
-
-                    <form action='@Url.Action("Cancelar", "Turnos")' method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@t.Id" />
-                        <button type="submit">Cancelar</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
-    <button class="Crear">
-        <a href='@Url.Action("Nuevo", "Album")'>Crear turno</a>
-    </button>
-}
+<div class="album">
+    @foreach(var figu in ViewBag.Album)
+    {
+        string color = figu.CantidadFU(figu.IdFigurita, 1)>0 ? "pegada":"vacia";
+        <div class="figurita @color">
+            <img src="@Url.Content("~/Imagen/" + figu.Foto)" />
+            <h4>@figu.NombreJugador</h4>
+            <p>@figu.Posicion</p>
+            <p>N° @figu.NumCamiseta</p>
+            <b>Cantidad: @figu.CantidadFU(figu.IdFigurita, 1)</b>
+        </div>
+    }
+</div>

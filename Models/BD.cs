@@ -4,59 +4,67 @@ namespace TP4_Album.Models;
 
 public class BD
 {
-    private string _connectionString = @"Server=localhost; DataBase=Album;Integrated Security=True;TrustServerCertificate=True";
-
+    private string _connectionString;
+    public BD()
+    {
+        _connectionString = @"Server=localhost; DataBase=Album;Integrated Security=True;TrustServerCertificate=True";
+    }
+    public int Cantidad(int idFigurita, int idUsuario){
+        using(SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query = @"SELECT Cantidad FROM FiguritaUsuario WHERE IdFigurita = @pidFigurita AND IdUsuario = @pidUsuario";
+            int respuesta = connection.QueryFirstOrDefault<int>(query, new {pidFigurita = idFigurita, pidUsuario = idUsuario});
+            if(respuesta == null)
+                respuesta = 0;
+            return respuesta;
+        }
+    }
     public List<Figuritas> AbrirSobre()
     {
-        List<Figuuritas> figuritas = new List<Figuritas>();
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            string query = "SELECT TOP 5 * FROM Figuritas ORDER BY NEWID()";
-            Figuritas = connection.Query<Figuritas>(query).ToList();
+        using(SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query = @"SELECT TOP 5 * FROM Figuritas ORDER BY NEWID()";
+            return connection.Query<Figuritas>(query).ToList();
         }
-        return figuritas;
     }
 
-    public void GuardarSobre(int idUsuario, List<Figuritas> figuritas)
+    public void GuardarSobre(int idUsuario, List<int> idsFiguritas)
     {
-        string query1 = "INSERT INTO FiguritaUsuario (IdFigurita, IdUsuario, Cantidad) VALUES (@figurita.IdFigurita, @idUsuario)";
-        string query2 = "";
-        bool resultado;
-        int cantidad;
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            foreach(Figurita figurita in figuritas){
-                if(figurita.Cantidad = 0){
-                    connection.Execute(query, new {IdFigurita = figurita.IdFigurita, IdUsuario = idUsuario, Cantidad = cantidad});
+        using(SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            foreach(int id in idsFiguritas)
+            {
+                string existe = @"SELECT COUNT(*) FROM FiguritaUsuario WHERE IdUsuario=@idUsuario AND IdFigurita=@id";
+                int cantidad = connection.ExecuteScalar<int>(existe, new { idUsuario, id });
+                if(cantidad==0)
+                {
+                    string insert = @"INSERT INTO FiguritaUsuario (IdUsuario, IdFigurita, Cantidad) VALUES (@idUsuario,@id,1)";
+                    connection.Execute(insert,new {idUsuario,id});
                 }
                 else
-                    cantidad += 1;
-                
+                {
+                    string update = @"UPDATE FiguritaUsuario SET Cantidad=Cantidad+1 WHERE IdUsuario=@idUsuario AND IdFigurita=@id";
+                    connection.Execute(update,new {idUsuario,id});
+                }
             }
         }
-        return resultado;
     }
 
-    public List<Figurita> ObtenerAlbum()
+    public List<Figuritas> ObtenerAlbum(int idUsuario)
     {
-        List<Figurita> Album;
-        string query = "SELECT (Foto, NombreJugador, idSeleccion, Posicion, NumCamiseta) FROM Figuritas";
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            Album = connection.Query<Figuritas>(query).ToList();
+        using(SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query=@"SELECT f.*, ISNULL(fu.Cantidad,0) Cantidad FROM Figuritas f LEFT JOIN FiguritaUsuario fu ON f.IdFigurita=fu.IdFigurita AND fu.IdUsuario=@idUsuario ORDER BY f.IdFigurita";
+            return connection.Query<Figuritas>(query,new{idUsuario}).ToList();
         }
-        return resultado;
     }
 
-    public List<FiguritaUsuario> ObtenerMiAlbum(int idUsuario)
+    public List<Figuritas> ObtenerMiAlbum(int idUsuario)
     {
-        List<FiguritaAlbum> figuritas;
-        string query = "SELECT (fu.IdFigurita, f.NombreJugador, f.Foto, f.Posicion, fu.Cantidad) FROM FiguritaUsuario fu INNER JOIN Figuritas f ON (f.IdFigurita = fu.IdFigurita) WHERE (fu.IdUsuario = @idUsuario)";
-        using(SqlConnection connection = new SqlConnection(_connectionString)){
-            Album = connection.Query<Figuritas>(query).ToList();
+        using(SqlConnection connection = new SqlConnection(_connectionString))
+        {
+            string query=@"SELECT * FROM FiguritaUsuario fu;";
+            return connection.Query<Figuritas>(query,new{idUsuario}).ToList();
         }
-        return resultado;
-    }
-
-    public List<FiguritaUsuario> ObtenerRepetidas(int idUsuario)
-    {
-        
     }
 }

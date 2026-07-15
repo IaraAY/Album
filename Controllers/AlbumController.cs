@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-
+using TP4_Album.Models;
 namespace TP4_Album.Controllers;
 
 public class AlbumController : Controller
@@ -9,12 +9,8 @@ public class AlbumController : Controller
 
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult MiAlbum()
-    {
-        ViewBag.Figuritas = bd.ObtenerAlbum(1);
+        ViewBag.Album = bd.ObtenerAlbum(1);
+        ViewBag.MiAlbum = bd.ObtenerMiAlbum(1);
         return View();
     }
 
@@ -28,9 +24,6 @@ public class AlbumController : Controller
     public IActionResult ConfirmarSobre(List<int> idsFiguritas)
     {
         bd.GuardarSobre(1, idsFiguritas);
-
-        return RedirectToAction("MiAlbum");
+        return RedirectToAction("Index");
     }
-
-
 }

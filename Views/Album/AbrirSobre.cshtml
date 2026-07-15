@@ -1,0 +1,18 @@
+@model List<TP4_Album.Models.Figuritas>
+
+<h1>Sobre</h1>
+
+<form asp-action="ConfirmarSobre" method="post">
+    <div class="sobre">
+        @foreach (var figu in ViewBag.Sobre)
+        {
+            <input type="hidden" name="idsFiguritas" value="@figu.IdFigurita" />
+            <div class="figurita">
+                <img src="@Url.Content("~/Imagen/" + figu.Foto)" />
+                <h3>@figu.NombreJugador</h3>
+            </div>
+        }
+    </div>
+
+    <button type="submit">Aceptar Sobre</button>
+</form>
